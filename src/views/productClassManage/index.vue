@@ -6,14 +6,14 @@
       <el-button class="filter-item" style="margin-left: 1px;" type="success" icon="el-icon-edit" @click="handleCreate">增加</el-button>
     </div>
     <el-table
-      :data="bookClassList"
+      :data="productClassList"
       element-loading-text="Loading"
       border
       fit
       highlight-current-row>
-      <el-table-column align="center" label="分类编号" >
+      <el-table-column align="center" label="类别编号" >
         <template slot-scope="scope">
-          {{ scope.row.pkId }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="类别名称"  align="center">
@@ -23,8 +23,8 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.pkId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row.pkId)">删除
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.id)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -48,14 +48,14 @@
 </template>
 
 <script>
-import * as bookClassList from '@/api/booksClass'
+import * as productClassList from '@/api/productsClass'
 
 export default {
-  name: 'bookClassList',
+  name: 'productClassList',
   data() {
     return {
       loading: true,
-      bookClassList: [],
+      productClassList: [],
       total: 0,
       listQuery: {
         limit: 10,
@@ -69,7 +69,7 @@ export default {
   },
   methods: {
     handleUpdate(id) {
-      this.$router.push({ path: `/bookClassManage/update/${id}` })
+      this.$router.push({ path: `/productClassManage/update/${id}` })
     },
     handleDelete(id) {
       this.$confirm('此操作将永久删除该产品, 是否继续?', '提示', {
@@ -77,7 +77,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        bookClassList.deleteById(id)
+        productClassList.deleteById(id)
           .then((result) => {
             this.$message({
               type: 'success',
@@ -97,7 +97,7 @@ export default {
       this.getList()
     },
     handleCreate() {
-      this.$router.push({ name: 'CreateBookClass' })
+      this.$router.push({ name: 'CreateProductClass' })
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
@@ -109,9 +109,10 @@ export default {
     },
     getList() {
       this.loading = true
-      bookClassList.query(this.listQuery)
+      productClassList.query(this.listQuery)
         .then((result) => {
-          this.bookClassList = result.data.list
+          console.log(result)
+          this.productClassList = result.data
           this.total = result.data.totalCount
           this.loading = false
         })

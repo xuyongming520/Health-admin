@@ -1,20 +1,19 @@
 import request from '@/utils/request'
 
-export function query({ limit, page, name }) {
+export function query({ limit, page }) {
   return request({
-    url: '/books/class/list',
+    url: '/proClass/selectClassList',
     method: 'post',
     data: {
-      limit,
-      page,
-      name
+      pageSize: limit,
+      currentPage: page
     }
   })
 }
 
 export function insert({ name }) {
   return request({
-    url: '/books/class',
+    url: '/proClass/addClass',
     method: 'post',
     data: {
       name
@@ -25,17 +24,17 @@ export function insert({ name }) {
 export function queryById(id) {
   console.log(479789)
   return request({
-    url: '/books/class/detail',
+    url: '/proClass/selectClass',
     method: 'get',
     params: {
-      id
+      classId: id
     }
   })
 }
 
 export function deleteById(id) {
   return request({
-    url: '/books/class',
+    url: '/proClass/deletedClass',
     method: 'delete',
     params: {
       id
@@ -45,10 +44,10 @@ export function deleteById(id) {
 
 export function update({ pkId, name }) {
   return request({
-    url: '/books/class',
-    method: 'put',
+    url: '/proClass/updateClass',
+    method: 'post',
     data: {
-      pkId,
+      classId: pkId,
       name
     }
   })

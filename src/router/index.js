@@ -22,7 +22,7 @@ import Layout from '../views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  { path: '/login', component: () => import('@/views/login/index'), hidden: true },
+  { path: '/', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   // {
@@ -91,83 +91,83 @@ export const constantRouterMap = [
   //   ]
   // },
   {
-    path: '/bookManage',
+    path: '/productManage',
     component: Layout,
-    redirect: '/bookManage/index',
-    meta: { title: '图书管理', icon: 'case' },
+    redirect: '/productManage/index',
+    meta: { title: '商品管理', icon: 'case' },
     children: [
       {
         path: 'index',
-        name: 'Books',
-        component: () => import('@/views/bookManage/index'),
-        meta: { title: '全部图书', icon: 'case' }
+        name: 'Products',
+        component: () => import('@/views/productManage/index'),
+        meta: { title: '全部商品', icon: 'case' }
       },
       {
         path: 'create',
-        name: 'CreateBook',
-        component: () => import('@/views/bookManage/create'),
-        meta: { title: '添加图书', icon: 'edit' }
+        name: 'CreateProduct',
+        component: () => import('@/views/productManage/create'),
+        meta: { title: '添加商品', icon: 'edit' }
       },
       {
         path: 'update/:id',
-        name: 'UpdateBook',
+        name: 'UpdateProduct',
         hidden: true,
-        component: () => import('@/views/bookManage/update'),
-        meta: { title: '修改图书信息' }
+        component: () => import('@/views/productManage/update'),
+        meta: { title: '修改商品信息' }
       }
     ]
   },
+  // {
+  //   path: '/bookInfoManage',
+  //   component: Layout,
+  //   redirect: '/bookInfoManage/index',
+  //   meta: { title: '图书信息管理', icon: 'case' },
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'BookInfos',
+  //       component: () => import('@/views/bookInfoManage/index'),
+  //       meta: { title: '图书信息', icon: 'case' }
+  //     },
+  //     {
+  //       path: 'create',
+  //       name: 'CreateBookInfo',
+  //       component: () => import('@/views/bookInfoManage/create'),
+  //       meta: { title: '添加图书信息', icon: 'edit' }
+  //     },
+  //     {
+  //       path: 'update/:id',
+  //       name: 'UpdateBookInfo',
+  //       hidden: true,
+  //       component: () => import('@/views/bookInfoManage/update'),
+  //       meta: { title: '修改图书详情' }
+  //     }
+  //   ]
+  // },
   {
-    path: '/bookInfoManage',
+    path: '/productClassManage',
     component: Layout,
-    redirect: '/bookInfoManage/index',
-    meta: { title: '图书信息管理', icon: 'case' },
+    redirect: '/productClassManage/index',
+    meta: { title: '商品类别管理', icon: 'case' },
     children: [
       {
         path: 'index',
-        name: 'BookInfos',
-        component: () => import('@/views/bookInfoManage/index'),
-        meta: { title: '图书信息', icon: 'case' }
+        name: 'ProductClasses',
+        component: () => import('@/views/productClassManage/index'),
+        meta: { title: '商品类别', icon: 'case' }
       },
       {
         path: 'create',
-        name: 'CreateBookInfo',
-        component: () => import('@/views/bookInfoManage/create'),
-        meta: { title: '添加图书信息', icon: 'edit' }
+        name: 'CreateProductClass',
+        component: () => import('@/views/productClassManage/create'),
+        meta: { title: '添加商品类别', icon: 'edit' }
       },
       {
         path: 'update/:id',
-        name: 'UpdateBookInfo',
+        name: 'UpdateProductClass',
         hidden: true,
-        component: () => import('@/views/bookInfoManage/update'),
-        meta: { title: '修改图书详情' }
-      }
-    ]
-  },
-  {
-    path: '/bookClassManage',
-    component: Layout,
-    redirect: '/bookClassManage/index',
-    meta: { title: '图书分类管理', icon: 'case' },
-    children: [
-      {
-        path: 'index',
-        name: 'BookClasses',
-        component: () => import('@/views/bookClassManage/index'),
-        meta: { title: '图书分类', icon: 'case' }
-      },
-      {
-        path: 'create',
-        name: 'CreateBookClass',
-        component: () => import('@/views/bookClassManage/create'),
-        meta: { title: '添加图书分类', icon: 'edit' }
-      },
-      {
-        path: 'update/:id',
-        name: 'UpdateBookClass',
-        hidden: true,
-        component: () => import('@/views/bookClassManage/update'),
-        meta: { title: '修改图书分类' }
+        component: () => import('@/views/productClassManage/update'),
+        meta: { title: '修改商品类别' }
       }
     ]
   },

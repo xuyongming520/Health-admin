@@ -2,18 +2,21 @@
   <div class="app-container" id="CreateNews">
     <el-form :rules="rules" ref="form" :model="form" label-width="150px">
       <div style="width:600px">
-        <el-form-item label="详情编号" prop="infoId">
+        <el-form-item label="详情编号" prop="classId">
           <el-input v-model="form.infoId"></el-input>
         </el-form-item>
       </div>
       <div style="width:600px">
-        <el-form-item label="图书馆位置" prop="location">
-          <el-input v-model="form.location"></el-input>
+        <el-form-item label="是否借阅" prop="name">
+          <el-select v-model="form.status" placeholder="请选择图书状态" style="width:320px">
+            <el-option label="未借阅" value="0"></el-option>
+            <el-option label="已借阅" value="1"></el-option>
+          </el-select>
         </el-form-item>
       </div>
       <div style="width:600px">
-        <el-form-item label="数量" prop="count">
-          <el-input v-model="form.count"></el-input>
+        <el-form-item label="图书馆位置" prop="name">
+          <el-input v-model="form.location"></el-input>
         </el-form-item>
       </div>
       <el-form-item>
@@ -25,20 +28,22 @@
 </template>
 
 <script>
-import * as books from '@/api/books'
+import * as books from '@/api/products'
 import { API_IP } from '@/utils/request'
 export default {
   name: 'CreateNews',
   data() {
     return {
+      loading: true,
       form: {
+        status: '',
         location: '',
-        infoId: '',
-        count: ''
+        infoId: ''
       },
       rules: {
-        location: [{ required: true, message: '请输入图书管位置', trigger: 'blur' }]
-        // infoId: [{ required: true, message: '请输入图书详情', trigger: 'blur' }]
+        status: [{ required: true, message: '请输入借阅状态', trigger: 'blur' }],
+        location: [{ required: true, message: '请输入图书管位置', trigger: 'blur' }],
+        infoId: [{ required: true, message: '请选择图书详情', trigger: 'blur' }]
       },
       ip: API_IP
     }
@@ -54,17 +59,26 @@ export default {
       })
     },
     createdBooks() {
-      console.log(this.form)
-      books.insert(this.form)
+      books.update(this.form)
         .then((result) => {
-          console.log(result)
           this.$message({
             type: 'success',
-            message: '创建成功!'
+            message: '保存成功!'
           })
           this.$router.push({ name: 'Books' })
         })
+    },
+    getData() {
+      this.loading = true
+      books.queryById(this.$route.params.id)
+        .then((result) => {
+          this.form = result.data
+          this.loading = false
+        })
     }
+  },
+  created() {
+    this.getData()
   }
 }
 </script>

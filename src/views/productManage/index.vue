@@ -9,7 +9,7 @@
     </div>
 
     <el-table
-      :data="books"
+      :data="products"
       element-loading-text="Loading"
       border
       fit
@@ -60,14 +60,14 @@
 </template>
 
 <script>
-import * as books from '@/api/books'
+import * as products from '@/api/products'
 
 export default {
-  name: 'Books',
+  name: 'Products',
   data() {
     return {
       loading: true,
-      books: [],
+      products: [],
       total: 0,
       listQuery: {
         limit: 10,
@@ -75,7 +75,7 @@ export default {
         classId: 0,
         name: ''
       },
-      booksClasses: [
+      productsClasses: [
         { key: 0, display_name: '未借阅' },
         { key: 1, display_name: '已借阅' }
       ],
@@ -89,7 +89,7 @@ export default {
       this.dialogVisible = true
     },
     handleUpdate(id) {
-      this.$router.push({ path: `/bookManage/update/${id}` })
+      this.$router.push({ path: `/productManage/update/${id}` })
     },
     handleDelete(id) {
       this.$confirm('此操作将永久删除该产品, 是否继续?', '提示', {
@@ -97,7 +97,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        books.deleteById(id)
+        products.deleteById(id)
           .then((result) => {
             this.$message({
               type: 'success',
@@ -117,7 +117,7 @@ export default {
       this.getList()
     },
     handleCreate() {
-      this.$router.push({ name: 'CreateBook' })
+      this.$router.push({ name: 'CreateProduct' })
     },
     handleSizeChange(val) {
       this.listQuery.limit = val
@@ -130,9 +130,9 @@ export default {
     getList() {
       this.loading = true
       console.log(this.listQuery)
-      books.query(this.listQuery)
+      products.query(this.listQuery)
         .then((result) => {
-          this.books = result.data.list
+          this.products = result.data
           this.total = result.data.totalCount
           this.loading = false
         })
