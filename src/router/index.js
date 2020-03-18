@@ -91,6 +91,33 @@ export const constantRouterMap = [
   //   ]
   // },
   {
+    path: '/productClassManage',
+    component: Layout,
+    redirect: '/productClassManage/index',
+    meta: { title: '商品类别管理', icon: 'case' },
+    children: [
+      {
+        path: 'index',
+        name: 'ProductClasses',
+        component: () => import('@/views/productClassManage/index'),
+        meta: { title: '商品类别', icon: 'case' }
+      },
+      {
+        path: 'create',
+        name: 'CreateProductClass',
+        component: () => import('@/views/productClassManage/create'),
+        meta: { title: '添加商品类别', icon: 'edit' }
+      },
+      {
+        path: 'update/:id',
+        name: 'UpdateProductClass',
+        hidden: true,
+        component: () => import('@/views/productClassManage/update'),
+        meta: { title: '修改商品类别' }
+      }
+    ]
+  },
+  {
     path: '/productManage',
     component: Layout,
     redirect: '/productManage/index',
@@ -144,33 +171,7 @@ export const constantRouterMap = [
   //     }
   //   ]
   // },
-  {
-    path: '/productClassManage',
-    component: Layout,
-    redirect: '/productClassManage/index',
-    meta: { title: '商品类别管理', icon: 'case' },
-    children: [
-      {
-        path: 'index',
-        name: 'ProductClasses',
-        component: () => import('@/views/productClassManage/index'),
-        meta: { title: '商品类别', icon: 'case' }
-      },
-      {
-        path: 'create',
-        name: 'CreateProductClass',
-        component: () => import('@/views/productClassManage/create'),
-        meta: { title: '添加商品类别', icon: 'edit' }
-      },
-      {
-        path: 'update/:id',
-        name: 'UpdateProductClass',
-        hidden: true,
-        component: () => import('@/views/productClassManage/update'),
-        meta: { title: '修改商品类别' }
-      }
-    ]
-  },
+
   {
     path: '/orderManage',
     component: Layout,
@@ -182,6 +183,13 @@ export const constantRouterMap = [
         name: 'Orders',
         component: () => import('@/views/orderManage/index'),
         meta: { title: '订单管理', icon: 'products' }
+      },
+      {
+        path: 'detail/:id',
+        name: 'OrdersDetail',
+        hidden: true,
+        component: () => import('@/views/orderManage/detail'),
+        meta: { title: '订单详情' }
       }
     ]
   },

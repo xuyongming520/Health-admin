@@ -2,14 +2,14 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
-    <el-dropdown class="avatar-container" trigger="click">
+    <div class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" src="../../../assets/user.png">
       </div>
       <div class="avatar-logout">
         <span @click="logout" style="display:block;">登出</span>
       </div>
-    </el-dropdown>
+    </div>
   </el-menu>
 </template>
 

@@ -42,10 +42,8 @@ export default {
       })
     },
     updateProductClass() {
-      console.log(this.form.id)
       productsClass.update(this.form)
         .then((result) => {
-          console.log(result)
           this.$message({
             type: 'success',
             message: '保存成功!'
@@ -58,13 +56,6 @@ export default {
       productsClass.queryById(this.$route.params.id)
         .then((result) => {
           this.form = result.data
-          // result.data.pathList.forEach(value => {
-          //   const url = value.split('/')
-          //   this.fileList.push({
-          //     name: url[url.length - 1],
-          //     url: value
-          //   })
-          // })
           this.loading = false
         })
     }

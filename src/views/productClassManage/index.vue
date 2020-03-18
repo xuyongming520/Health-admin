@@ -1,10 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="filter-container" style="margin-bottom:20px">
-      <el-input v-model="listQuery.name" placeholder="标题" style="width: 200px;" class="filter-item" clearable @keyup.enter.native="handleFilter"/>
-      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 1px;" type="success" icon="el-icon-edit" @click="handleCreate">增加</el-button>
-    </div>
     <el-table
       :data="productClassList"
       element-loading-text="Loading"
@@ -111,7 +106,6 @@ export default {
       this.loading = true
       productClassList.query(this.listQuery)
         .then((result) => {
-          console.log(result)
           this.productClassList = result.data
           this.total = result.data.totalCount
           this.loading = false

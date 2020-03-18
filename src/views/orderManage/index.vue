@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column label="状态" width="200" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.status }}</span>
+          <span>{{ orderStatus[scope.row.status].display_name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="创建时间" width="120" align="center">
@@ -51,7 +51,12 @@
           <span>{{ scope.row.createTime | formatDate }}</span>
         </template>
       </el-table-column>
-
+    <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleDetail(scope.row.id)">详情</el-button>
+          <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.row.pkId)">删除</el-button> -->
+        </template>
+      </el-table-column>
     </el-table>
 
     <div class="pagination-container" style="margin-top:10px;">
@@ -80,9 +85,10 @@ export default {
       loading: true,
       orders: [],
       total: 0,
-      ordersClasses: [
-        { key: 0, display_name: '未归还' },
-        { key: 1, display_name: '已归还' }
+      orderStatus: [
+        { key: 0, display_name: '未发货' },
+        { key: 1, display_name: '已完成' },
+        { key: 2, display_name: '发货中' }
       ],
       listQuery: {
         limit: 10,
@@ -106,9 +112,11 @@ export default {
       this.listQuery.page = val
       this.getList()
     },
+    handleDetail(id) {
+      this.$router.push({ path: `/orderManage/detail/${id}` })
+    },
     getList() {
       this.loading = true
-      console.log(this.listQuery)
       orders.query(this.listQuery)
         .then((result) => {
           console.log(result.data.list)

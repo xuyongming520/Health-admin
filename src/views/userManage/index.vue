@@ -1,14 +1,5 @@
 <template>
   <div class="app-container">
-    <!-- <div class="filter-container" style="margin-bottom:20px">
-      <el-input v-model="listQuery.name" placeholder="标题" style="width: 200px;" class="filter-item" clearable @keyup.enter.native="handleFilter"/>
-      <!-- <el-select v-model="listQuery.classId" placeholder="类别" clearable class="filter-item" style="width: 180px">
-        <el-option v-for="item in usersClasses" :key="item.key" :label="item.display_name" :value="item.key"/>
-      </el-select> -->
-      <!-- <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 1px;" type="success" icon="el-icon-edit" @click="handleCreate">增加</el-button>
-    </div> -->
-
     <el-table
       :data="users"
       element-loading-text="Loading"
@@ -35,7 +26,7 @@
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="地址" width="180" align="center">
+      <el-table-column label="地址" width="450" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.address }}</span>
         </template>
@@ -52,7 +43,7 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.pkId)">编辑</el-button>
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.id)">编辑</el-button>
           <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.row.pkId)">删除</el-button> -->
         </template>
       </el-table-column>
@@ -125,7 +116,6 @@ export default {
       })
     },
     handleFilter() {
-      console.log(this.listQuery.classId)
       this.listQuery.page = 1
       if (this.listQuery.classId === '0') {
         this.listQuery.classId = null

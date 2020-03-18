@@ -12,6 +12,16 @@ export function query({ limit, page }) {
   })
 }
 
+export function queryById(id) {
+  return request({
+    url: '/orders/selectOrders',
+    method: 'get',
+    params: {
+      orderId: id
+    }
+  })
+}
+
 // export function insert({ name, shortIntroduce, longIntroduce, marketTime, model, classId, image, company, video }) {
 //   return request({
 //     url: '/products',
@@ -30,31 +40,22 @@ export function query({ limit, page }) {
 //   })
 // }
 
-// export function update({ pkId, name, shortIntroduce, longIntroduce, marketTime, model, classId, image, company, video }) {
-//   return request({
-//     url: '/products',
-//     method: 'put',
-//     data: {
-//       pkId,
-//       name,
-//       shortIntroduce,
-//       longIntroduce,
-//       marketTime,
-//       model,
-//       image,
-//       company,
-//       classId: classId || '1',
-//       video
-//     }
-//   })
-// }
-
-export function deleteById(id) {
+export function update({ pkId, name, shortIntroduce, longIntroduce, marketTime, model, classId, image, company, video }) {
   return request({
-    url: '/books/lend',
-    method: 'delete',
-    params: {
-      id
+    url: '/products',
+    method: 'put',
+    data: {
+      pkId,
+      name,
+      shortIntroduce,
+      longIntroduce,
+      marketTime,
+      model,
+      image,
+      company,
+      classId: classId || '1',
+      video
     }
   })
 }
+

@@ -2,16 +2,15 @@ import request from '@/utils/request'
 
 export function queryById(id) {
   return request({
-    url: '/users/detail',
+    url: '/user/selectUser',
     method: 'get',
     params: {
-      id
+      userId: id
     }
   })
 }
 
 export function query({ limit, page }) {
-  console.log({ limit, page })
   return request({
     url: '/user/selectUserList',
     method: 'post',
@@ -32,13 +31,12 @@ export function query({ limit, page }) {
 //   })
 // }
 
-export function update({ pkId, uniqueId, classId, name, password, img, balance }) {
-  console.log(uniqueId)
+export function update({ id, name, email, address, balance }) {
   return request({
-    url: '/users',
-    method: 'put',
+    url: '/user/updateUser',
+    method: 'post',
     data: {
-      pkId, uniqueId, classId: classId || null, name, password, img, balance
+      id, name, email, address, balance
     }
   })
 }

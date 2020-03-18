@@ -22,7 +22,6 @@ export function insert({ name }) {
 }
 
 export function queryById(id) {
-  console.log(479789)
   return request({
     url: '/proClass/selectClass',
     method: 'get',
@@ -37,17 +36,17 @@ export function deleteById(id) {
     url: '/proClass/deletedClass',
     method: 'delete',
     params: {
-      id
+      classId: id
     }
   })
 }
 
-export function update({ pkId, name }) {
+export function update({ id, name }) {
   return request({
     url: '/proClass/updateClass',
     method: 'post',
     data: {
-      classId: pkId,
+      id,
       name
     }
   })
