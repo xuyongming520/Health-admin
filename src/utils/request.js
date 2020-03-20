@@ -5,6 +5,8 @@ import { getToken } from '@/utils/auth'
 
 export const API_IP = 'http://localhost:8080'
 
+export const IMG_URL = 'http://localhost:8080/product/images/'
+
 // 创建axios实例
 const service = axios.create({
   baseURL: API_IP, // api的base_url

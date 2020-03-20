@@ -1,43 +1,62 @@
 <template>
   <div class="app-container">
     <div class="filter-container" style="margin-bottom:20px">
-      <el-select v-model="listQuery.status" placeholder="类别" clearable class="filter-item" style="width: 180px">
-        <el-option v-for="item in booksClasses" :key="item.key" :label="item.display_name" :value="item.key"/>
-      </el-select>
+      <el-input v-model="listQuery.name" placeholder="标题" style="width: 200px;" class="filter-item" clearable @keyup.enter.native="handleFilter"/>
+      <!-- <el-select v-model="listQuery.classId" placeholder="类别" clearable class="filter-item" style="width: 180px">
+        <el-option v-for="item in productsClasses" :key="item.key" :label="item.display_name" :value="item.key"/>
+      </el-select> -->
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 1px;" type="success" icon="el-icon-edit" @click="handleCreate">增加</el-button>
     </div>
 
     <el-table
-      :data="products"
+      :data="product"
       element-loading-text="Loading"
       border
       fit
       highlight-current-row>
-      <el-table-column align="center" label="编号" width="110">
+      <el-table-column align="center" label="编号" width="95">
         <template slot-scope="scope">
-          {{ scope.row.pkId }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="图书信息编号" width="110" align="center">
+       <el-table-column label="商品名" align="center">
         <template slot-scope="scope">
-          <el-tag>{{ scope.row.infoId }}</el-tag>
+          <span class="link-type" @click="handleUpdate(scope.row.id)">{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="是否借阅" align="center">
+      <el-table-column class-name="status-col" label="类别编号" width="110" align="center">
         <template slot-scope="scope">
-           {{ booksClasses[scope.row.status].display_name }}
+          <el-tag>{{ scope.row.classId }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="图书馆位置" align="center">
+      <el-table-column class-name="status-col" label="商品图片" width="200" align="center">
         <template slot-scope="scope">
-           {{ scope.row.location }}
+          <img
+            :src="imgUrl+scope.row.pic"
+            width="100px"
+            height="100px"
+            @click="handlePictureCardPreview(scope.row.pic)"/>
+          <el-dialog :visible.sync="dialogVisible">
+            <img width="100%" :src="dialogImageUrl" alt="">
+          </el-dialog>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
+
+      <el-table-column label="商品单价" width="250" align="center">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.pkId)">编辑</el-button>
-          <el-button size="mini" type="danger" @click="handleDelete(scope.row.pkId)">删除
+          <span>{{ scope.row.price }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="库存" width="200" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.storage }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" align="center" width="180" class-name="small-padding fixed-width">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleUpdate(scope.row.id)">编辑</el-button>
+          <el-button size="mini" type="danger" @click="handleDelete(scope.row.id)">删除
           </el-button>
         </template>
       </el-table-column>
@@ -60,14 +79,14 @@
 </template>
 
 <script>
-import * as products from '@/api/products'
-
+import * as product from '@/api/product'
+import { IMG_URL } from '@/utils/request'
 export default {
-  name: 'Products',
+  name: 'product',
   data() {
     return {
       loading: true,
-      products: [],
+      product: [],
       total: 0,
       listQuery: {
         limit: 10,
@@ -75,17 +94,14 @@ export default {
         classId: 0,
         name: ''
       },
-      productsClasses: [
-        { key: 0, display_name: '未借阅' },
-        { key: 1, display_name: '已借阅' }
-      ],
       dialogVisible: false,
-      dialogImageUrl: ''
+      dialogImageUrl: '',
+      imgUrl: IMG_URL
     }
   },
   methods: {
     handlePictureCardPreview(url) {
-      this.dialogImageUrl = url
+      this.dialogImageUrl = this.imgUrl + url
       this.dialogVisible = true
     },
     handleUpdate(id) {
@@ -97,7 +113,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        products.deleteById(id)
+        product.deleteById(id)
           .then((result) => {
             this.$message({
               type: 'success',
@@ -129,10 +145,10 @@ export default {
     },
     getList() {
       this.loading = true
-      console.log(this.listQuery)
-      products.query(this.listQuery)
+      product.query(this.listQuery)
         .then((result) => {
-          this.products = result.data
+          console.log(result)
+          this.product = result.data.list
           this.total = result.data.totalCount
           this.loading = false
         })
@@ -143,3 +159,6 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+</style>

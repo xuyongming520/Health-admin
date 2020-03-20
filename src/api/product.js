@@ -1,32 +1,37 @@
 import request from '@/utils/request'
 
-export function query({ limit, page, name, author, publishers }) {
+export function query({ limit, page, name, classId }) {
   return request({
-    url: '/books/information/list',
+    url: '/product/selectProductList',
     method: 'post',
     data: {
-      limit, page, name, author, publishers
+      pageSize: limit,
+      currentPage: page,
+      name,
+      classId
     }
   })
 }
 
-export function insert({ classId, name, publishers, author, num, image }) {
-  console.log(789)
+export function insert(
+  { pic, name, classId, price, storage, manufacturerCon, proNumber, shelfLife, series, provinces, factoryName, netContent,
+    storeMethod, brand, model, color, ingredients, introduce }) {
   return request({
-    url: '/books/information',
+    url: '/product/addProduct',
     method: 'post',
     data: {
-      classId, name, publishers, author, num, image
+      pic, name, classId, price, storage, manufacturerCon, proNumber, shelfLife, series, provinces, factoryName, netContent,
+      storeMethod, brand, model, color, ingredients, introduce
     }
   })
 }
 
 export function queryById(id) {
   return request({
-    url: '/books/information/detail',
+    url: '/product/selectProduct',
     method: 'get',
     params: {
-      id
+      productId: id
     }
   })
 }
@@ -45,10 +50,10 @@ export function update({ pkId, classId, name, publishers, author, num, image }) 
 
 export function deleteById(id) {
   return request({
-    url: '/books/information',
+    url: '/product/deletedProduct',
     method: 'delete',
     params: {
-      id
+      productId: id
     }
   })
 }
