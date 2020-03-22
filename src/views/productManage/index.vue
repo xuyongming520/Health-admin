@@ -91,8 +91,8 @@ export default {
       listQuery: {
         limit: 10,
         page: 1,
-        classId: 0,
-        name: ''
+        classId: null,
+        name: null
       },
       dialogVisible: false,
       dialogImageUrl: '',
@@ -148,8 +148,10 @@ export default {
       product.query(this.listQuery)
         .then((result) => {
           console.log(result)
-          this.product = result.data.list
-          this.total = result.data.totalCount
+          this.product = result.data.records
+          this.total = result.data.total
+          this.listQuery.limit = result.data.size
+          this.listQuery.page = result.data.current
           this.loading = false
         })
     }

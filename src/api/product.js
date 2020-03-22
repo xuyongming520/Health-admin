@@ -36,14 +36,15 @@ export function queryById(id) {
   })
 }
 
-export function update({ pkId, classId, name, publishers, author, num, image }) {
-  console.log('asd')
-  console.log(image)
+export function update(
+  { id, pic, name, classId, price, storage, manufacturerCon, proNumber, shelfLife, series, provinces, factoryName, netContent,
+    storeMethod, brand, model, color, ingredients, introduce }) {
   return request({
-    url: '/books/information',
-    method: 'put',
+    url: '/product/updateProduct',
+    method: 'post',
     data: {
-      pkId, classId, name, publishers, author, num, image
+      id, pic, name, classId, price, storage, manufacturerCon, proNumber, shelfLife, series, provinces, factoryName, netContent,
+      storeMethod, brand, model, color, ingredients, introduce
     }
   })
 }
@@ -54,6 +55,16 @@ export function deleteById(id) {
     method: 'delete',
     params: {
       productId: id
+    }
+  })
+}
+
+export function images(pic) {
+  return request({
+    url: '/product/images',
+    method: 'post',
+    data: {
+      base64: pic
     }
   })
 }

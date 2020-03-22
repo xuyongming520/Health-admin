@@ -16,12 +16,12 @@
           {{ scope.row.id }}
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="订单编号" width="110" align="center">
+      <el-table-column class-name="status-col" label="订单编号" align="center">
         <template slot-scope="scope">
           <el-tag>{{ scope.row.orderId}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="商品编号" width="120" align="center">
+      <!-- <el-table-column label="商品编号" width="120" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.proId }}</span>
         </template>
@@ -40,20 +40,20 @@
         <template slot-scope="scope">
           <span>{{ scope.row.total}}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="状态" width="200" align="center">
         <template slot-scope="scope">
           <span>{{ orderStatus[scope.row.status].display_name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="创建时间" width="120" align="center">
+      <el-table-column label="创建时间" width="220" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.createTime | formatDate }}</span>
         </template>
       </el-table-column>
     <el-table-column label="操作" align="center" width="250" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini" @click="handleDetail(scope.row.id)">详情</el-button>
+          <el-button type="primary" size="mini" @click="handleDetail(scope.row.orderId)">详情</el-button>
           <!-- <el-button size="mini" type="danger" @click="handleDelete(scope.row.pkId)">删除</el-button> -->
         </template>
       </el-table-column>

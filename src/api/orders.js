@@ -1,7 +1,6 @@
 import request from '@/utils/request'
 
 export function query({ limit, page }) {
-  console.log({ limit, page })
   return request({
     url: '/orders/selectOrdersList',
     method: 'post',
@@ -22,6 +21,15 @@ export function queryById(id) {
   })
 }
 
+export function update(id, status) {
+  return request({
+    url: '/orders/updateOrdersStatus',
+    method: 'post',
+    data: {
+      orderId: id,
+      status
+    }
+  })
 // export function insert({ name, shortIntroduce, longIntroduce, marketTime, model, classId, image, company, video }) {
 //   return request({
 //     url: '/products',
@@ -39,23 +47,5 @@ export function queryById(id) {
 //     }
 //   })
 // }
-
-export function update({ pkId, name, shortIntroduce, longIntroduce, marketTime, model, classId, image, company, video }) {
-  return request({
-    url: '/products',
-    method: 'put',
-    data: {
-      pkId,
-      name,
-      shortIntroduce,
-      longIntroduce,
-      marketTime,
-      model,
-      image,
-      company,
-      classId: classId || '1',
-      video
-    }
-  })
 }
 

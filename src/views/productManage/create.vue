@@ -3,20 +3,17 @@
     <el-form :rules="rules" ref="form" :model="form" label-width="150px">
       <el-form-item label="商品图片" prop="pic">
         <el-upload
-          :action="`${ip}/product/images`"
-          list-type="picture-card"
+          class="avatar-uploader"
+          action=""
+          :show-file-list="false"
+          :on-change="getFile"
           :limit="1"
-          :before-upload="onBeforeUploadCover"
-          :on-success="handleSuccess"
-          :on-preview="handlePictureCardPreview"
-          :on-exceed="handleExceed"
-          accept="image/jpeg,image/png"
-          :file-list="imageList">
-          <i class="el-icon-plus"></i>
+          list-type="picture"
+          :auto-upload="false"
+          >
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
       </el-form-item>
       <el-row :gutter="20">
         <el-col :span="6">
@@ -49,10 +46,10 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="6">
+                <el-col :span="6">
           <div class="grid-content">
-            <el-form-item label="保质期" width="" prop="num">
-              <el-input v-model="form.shelfLife"></el-input>
+            <el-form-item label="储藏方法" width="" prop="storeMethod">
+              <el-input v-model="form.storeMethod"></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -109,13 +106,6 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="6">
-          <div class="grid-content">
-            <el-form-item label="储藏方法" width="" prop="storeMethod">
-              <el-input v-model="form.storeMethod"></el-input>
-            </el-form-item>
-          </div>
-        </el-col>
         <el-col :span="6">
           <div class="grid-content">
             <el-form-item label="品牌" width="" prop="brand">
@@ -184,48 +174,48 @@ export default {
         classId: '',
         price: '',
         storage: '',
-        introduce: '',
-        pic: ''
+        introduce: ''
       },
       rules: {
         name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
         classId: [{ required: true, message: '请选择商品类别', trigger: 'blur' }],
         price: [{ required: true, message: '请输入商品单价', trigger: 'blur' }],
         introduce: [{ required: true, message: '请输入商品介绍', trigger: 'blur' }],
-        storage: [{ required: true, message: '请输入作者', trigger: 'blur' }],
-        pic: [{ required: true, message: '请上传产品图片', trigger: 'blur' }]
+        storage: [{ required: true, message: '请输入作者', trigger: 'blur' }]
       },
       fileList: [],
       imageList: [],
       dialogImageUrl: '',
       dialogVisible: false,
-      ip: API_IP
+      ip: API_IP,
+      imageUrl: ''
     }
   },
   methods: {
-    handleExceed() {
-      this.$message({
-        type: 'warning',
-        message: '只支持1张图片!'
+    getFile(file, fileList) {
+      this.getBase64(file.raw).then(res => {
+        this.imageUrl = res
+        product.images(res)
+          .then((result) => {
+            this.form.pic = result.data
+          })
       })
     },
-    onBeforeUploadCover(file) {
-      const isIMAGE = (file.type === ('image/jpeg' || 'image/png' || 'image/jpg'))
-      if (!isIMAGE) {
-        this.$message.error('上传文件只能是jpg/png格式!')
-      }
-      return isIMAGE
-    },
-    handleSuccess(response, file) {
-      console.log(111)
-      console.log(file)
-      console.log(response)
-      const url = response.data.split('/')
-      this.form.image = url[url.length - 1]
-    },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+    getBase64(file) {
+      return new Promise(function(resolve, reject) {
+        const reader = new FileReader()
+        let imgResult = ''
+        reader.readAsDataURL(file)
+        reader.onload = function() {
+          imgResult = reader.result
+        }
+        reader.onerror = function(error) {
+          reject(error)
+        }
+        reader.onloadend = function() {
+          resolve(imgResult)
+        }
+      })
     },
     onSubmit() {
       this.$refs['form'].validate((valid) => {
@@ -237,7 +227,6 @@ export default {
       })
     },
     createdProduct() {
-      console.log(123)
       product.insert(this.form)
         .then((result) => {
           this.$message({
@@ -264,5 +253,29 @@ export default {
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
+  }
+  .avatar-uploader .el-upload {
+
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+        border: 1px dashed #d9d9d9;
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 </style>

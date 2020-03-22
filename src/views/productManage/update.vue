@@ -3,20 +3,17 @@
     <el-form :rules="rules" ref="form" :model="form" label-width="150px">
       <el-form-item label="商品图片" prop="pic">
         <el-upload
-          :action="`${ip}/books/information/temp`"
-          list-type="picture-card"
+          class="avatar-uploader"
+          action=""
+          :show-file-list="false"
+          :on-change="getFile"
           :limit="1"
-          :before-upload="onBeforeUploadCover"
-          :on-success="handleSuccess"
-          :on-preview="handlePictureCardPreview"
-          :on-exceed="handleExceed"
-          accept="image/jpeg,image/png"
-          :file-list="imageList">
-          <i class="el-icon-plus"></i>
+          list-type="picture"
+          :auto-upload="false"
+          >
+          <img v-if="imageUrl" :src="imageUrl" class="avatar">
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
-        <el-dialog :visible.sync="dialogVisible">
-          <img width="100%" :src="dialogImageUrl" alt="">
-        </el-dialog>
       </el-form-item>
       <el-row :gutter="20">
         <el-col :span="6">
@@ -51,8 +48,8 @@
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="grid-content">
-            <el-form-item label="保质期" width="" prop="shelfLife">
-              <el-input v-model="form.shelfLife"></el-input>
+            <el-form-item label="储藏方法" width="" prop="storeMethod">
+              <el-input v-model="form.storeMethod"></el-input>
             </el-form-item>
           </div>
         </el-col>
@@ -109,13 +106,7 @@
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="6">
-          <div class="grid-content">
-            <el-form-item label="储藏方法" width="" prop="storeMethod">
-              <el-input v-model="form.storeMethod"></el-input>
-            </el-form-item>
-          </div>
-        </el-col>
+
         <el-col :span="6">
           <div class="grid-content">
             <el-form-item label="品牌" width="" prop="brand">
@@ -165,7 +156,7 @@
         </el-col>
       </el-row>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">立即发布</el-button>
+        <el-button type="primary" @click="onSubmit">保存</el-button>
         <el-button>取消</el-button>
       </el-form-item>
     </el-form>
@@ -174,7 +165,7 @@
 
 <script>
 import * as product from '@/api/product'
-import { API_IP } from '@/utils/request'
+import { API_IP, IMG_URL } from '@/utils/request'
 export default {
   name: 'CreateNews',
   data() {
@@ -183,26 +174,53 @@ export default {
       form: {
         name: '',
         classId: '',
-        publishers: '',
-        author: '',
-        shortIntroduce: '',
-        image: ''
+        price: '',
+        storage: '',
+        introduce: '',
+        pic: ''
       },
       rules: {
-        name: [{ required: true, message: '请输入图书名称', trigger: 'blur' }],
-        classId: [{ required: true, message: '请选择图书类别', trigger: 'blur' }],
-        publishers: [{ required: true, message: '请输入图书出版社', trigger: 'blur' }],
-        introduce: [{ required: true, message: '请输入图书简短介绍', trigger: 'blur' }],
-        author: [{ required: true, message: '请输入作者', trigger: 'blur' }]
-
+        name: [{ required: true, message: '请输入商品名称', trigger: 'blur' }],
+        classId: [{ required: true, message: '请选择商品类别', trigger: 'blur' }],
+        price: [{ required: true, message: '请输入商品价格', trigger: 'blur' }],
+        introduce: [{ required: true, message: '请输入商品介绍', trigger: 'blur' }],
+        storage: [{ required: true, message: '请输入库存量', trigger: 'blur' }],
+        pic: [{ required: true, message: '请输入图片', trigger: 'blur' }]
       },
       imageList: [],
       dialogImageUrl: '',
       dialogVisible: false,
-      ip: API_IP
+      ip: API_IP,
+      imgUrl: IMG_URL,
+      imageUrl: ''
     }
   },
   methods: {
+    getFile(file, fileList) {
+      this.getBase64(file.raw).then(res => {
+        this.imageUrl = res
+        product.images(res)
+          .then((result) => {
+            this.form.pic = result.data
+          })
+      })
+    },
+    getBase64(file) {
+      return new Promise(function(resolve, reject) {
+        const reader = new FileReader()
+        let imgResult = ''
+        reader.readAsDataURL(file)
+        reader.onload = function() {
+          imgResult = reader.result
+        }
+        reader.onerror = function(error) {
+          reject(error)
+        }
+        reader.onloadend = function() {
+          resolve(imgResult)
+        }
+      })
+    },
     onBeforeUploadCover(file) {
       const isIMAGE = (file.type === ('image/jpeg' || 'image/png' || 'image/jpg'))
       if (!isIMAGE) {
@@ -242,7 +260,7 @@ export default {
             type: 'success',
             message: '保存成功!'
           })
-          this.$router.push({ name: 'Product' })
+          this.$router.push({ name: 'Products' })
         })
     },
     getData() {
@@ -251,13 +269,20 @@ export default {
         .then((result) => {
           console.log(result)
           this.form = result.data
-          const image = result.data.image
-          const url = result.data.image.split('/')
-          this.form.image = url[url.length - 1]
-          this.imageList.push({
-            name: url[url.length - 1],
-            url: image
-          })
+          const image = result.data.pic
+          // const url = result.data.image.split('/')
+
+          this.form.pic = image
+          this.imageUrl = this.imgUrl + image
+          // console.log(this.form.pic)
+          // this.imageList.push({
+          //   name: image,
+          //   url: this.imgUrl + image
+          // })
+          // this.imageList.push({
+          //   name: url[url.length - 1],
+          //   url: image
+          // })
           this.loading = false
         })
     }
@@ -281,5 +306,29 @@ export default {
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
+  }
+  .avatar-uploader .el-upload {
+
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+        border: 1px dashed #d9d9d9;
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
   }
 </style>
