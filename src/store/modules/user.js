@@ -27,7 +27,14 @@ const user = {
             case 0:
               resolve(response)
               break
+            case 2:
+              console.log(response)
+              resolve(response)
+              this.$message.error('登陆失败')
+              break
             default:
+              this.$message.error('登陆失败')
+              resolve(response)
               break
           }
         }).catch(error => {

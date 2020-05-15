@@ -21,26 +21,6 @@
           <el-tag>{{ scope.row.orderId}}</el-tag>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="商品编号" width="120" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.proId }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="用户编号" width="120" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.userId }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="数量" >
-        <template slot-scope="scope">
-          <span class="link-type">{{ scope.row.total }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="总价" width="120" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.total}}</span>
-        </template>
-      </el-table-column> -->
       <el-table-column label="状态" width="200" align="center">
         <template slot-scope="scope">
           <span>{{ orderStatus[scope.row.status].display_name }}</span>
@@ -88,7 +68,8 @@ export default {
       orderStatus: [
         { key: 0, display_name: '未发货' },
         { key: 1, display_name: '已完成' },
-        { key: 2, display_name: '发货中' }
+        { key: 2, display_name: '发货中' },
+        { key: 3, display_name: '已退货' }
       ],
       listQuery: {
         limit: 10,

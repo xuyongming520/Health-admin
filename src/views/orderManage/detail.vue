@@ -22,7 +22,7 @@
     <el-row v-for="(item, key) of detail" :key="key">
       <el-col :span="24">
         <el-card :body-style="{ padding: '0px' }">
-          <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
+          <img :src="imgUrl+detail[key].proPic" class="image">
           <div class="content">
             <el-row>
               <h4 style="float:left">商品编号:</h4><div class="word">{{detail[key].proId}}</div>
@@ -68,7 +68,8 @@ export default {
       orderStatus: [
         { key: 0, display_name: '未发货' },
         { key: 1, display_name: '已完成' },
-        { key: 2, display_name: '配送中' }
+        { key: 2, display_name: '配送中' },
+        { key: 3, display_name: '已退货' }
       ],
       detail_createTime: '',
       detail_userId: 0,
@@ -117,6 +118,7 @@ export default {
           this.detail_createTime = result.data[0].createTime
           this.detail_userId = result.data[0].userId
           this.detail_userName = result.data[0].userName
+          this.detail_pic = result.data[0].proPic
           this.detail = result.data
           for (let i = 0; i < this.detail.length; i++) {
             this.orderTotal = this.detail[i].total + this.orderTotal
@@ -143,6 +145,8 @@ export default {
   }
   .image{
     float: left;
+    height: 250px;
+    width:250px;
   }
   .content{
     float:left;

@@ -41,7 +41,7 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin'
+        username: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }]
@@ -63,16 +63,22 @@ export default {
         if (valid) {
           this.loading = true
           this.$store.dispatch('Login', this.loginForm).then((res) => {
-            console.log(res)
             switch (res.code) {
               case 0:
-                console.log(123)
+                console.log(34)
                 this.$router.push({ path: '/usermanage' })
                 break
               case 1:
-                this.$message.error(res.msg)
+                console.log(34)
+                this.$message.error('登陆失败')
+                break
+              case 2:
+                console.log(12)
+                this.$message.error('登陆失败')
                 break
               default:
+                console.log(12)
+                this.$message.error('登陆失败')
                 break
             }
             this.loading = false
